@@ -1,0 +1,1 @@
+FROM bitnami/postgresql:12.10.0
