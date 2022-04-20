@@ -5,7 +5,10 @@ services:
     ports:
       - "8000:5000"
   redis:
-    image: "bitnami/redis:6.0"
-    ALLOW_EMPTY_PASSWORD: yes
+    build: "./Redis"
+    ports: 
+      - "6379"
+  server:
+    build: ./Servidor
 
 
