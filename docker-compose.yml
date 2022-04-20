@@ -1,14 +1,32 @@
 version: "3.9"
 services:
   web:
-    build: ./Cliente/.
+    build: ./Cliente
     ports:
       - "8000:5000"
+    depends_on:
+      - redis
+      - server
+      - postgres
   redis:
     build: "./Redis"
     ports: 
       - "6379"
   server:
     build: ./Servidor
+    depends_on:
+      - postgres
+  postgres:
+    build: ./Postgres
+    restart: always
+    ports:
+      - "5432"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql  
+    environment:
+      - POSTGRESQL_USERNAME= postgres
+      - POSTGRESQL_DATABASE= Tarea1
+      - ALLOW_EMPTY_PASSWORD= yes
+      - POSTGRESQL_PASSWORD= 123456
 
 
