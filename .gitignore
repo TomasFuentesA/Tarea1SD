@@ -1,3 +1,5 @@
 #Archivos que vienen del .proto
 Servidor/proto_message_pb2_grpc.py
 Servidor/proto_message_pb2.py
+Cliente/proto_message_pb2.py
+Cliente/proto_message_pb2_grpc.py
