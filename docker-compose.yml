@@ -1,5 +1,23 @@
 version: "3.9"
+
+networks:
+  my_network:
+
 services:
+
+  postgres:
+    build: ./Postgres
+    restart: always
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - bind-address=0.0.0.0
+      - POSTGRESQL_DATABASE=Tarea1
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - my_network
+
   web:
     build: ./Cliente
     ports:
@@ -8,21 +26,18 @@ services:
       - redis
       - server
       - postgres
+
   redis:
     build: "./Redis"
     ports: 
       - "6379:6379"
+
   server:
     build: ./Servidor
     depends_on:
       - postgres
-  postgres:
-    build: ./Postgres
-    restart: always
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRESQL_DATABASE=Tarea1
-      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - my_network
+  
 
 
