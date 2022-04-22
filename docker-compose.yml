@@ -11,7 +11,7 @@ services:
   redis:
     build: "./Redis"
     ports: 
-      - "6379"
+      - "6379:6379"
   server:
     build: ./Servidor
     depends_on:
