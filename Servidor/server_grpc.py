@@ -5,6 +5,7 @@ import proto_message_pb2_grpc
 from psycopg2 import connect
 from time import sleep
 import logging
+import server_resources
 
 class buscar(proto_message_pb2_grpc.ItemServiceServicer):
 
@@ -14,9 +15,6 @@ class buscar(proto_message_pb2_grpc.ItemServiceServicer):
     def GetServerResponse(self, request, context):
         print ("Hola mundo")
 
-def db_con():
-    conn = connect(host="postgres" ,dbname="Tarea1", user="postgres", password="postgres", port= 5432)
-    return conn
 
 def serve():
 
@@ -25,7 +23,7 @@ def serve():
     server.add_insecure_port('[::]:50051')
     server.start()
     sleep(20)
-    conn = db_con()
+    conn = server_resources.init_db()
     cursor = conn.cursor()
     cursor.execute(f"SELECT * FROM Items;")
     for i, record in enumerate(cursor):

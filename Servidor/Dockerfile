@@ -3,6 +3,7 @@ FROM bitnami/python:3.8.13
 
 COPY proto_message.proto ./
 COPY server_grpc.py ./
+COPY server_resources.py ./
 
 RUN python -m pip install grpcio
 RUN python -m pip install grpcio-tools
