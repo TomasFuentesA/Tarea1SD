@@ -3,11 +3,13 @@ from concurrent import futures
 import proto_message_pb2
 import proto_message_pb2_grpc
 from psycopg2 import connect
+from time import sleep
+import logging
 
 class buscar(proto_message_pb2_grpc.ItemServiceServicer):
 
     def __init__(self):
-        print("Inicialización correcta")
+        logging.warning("Inicialización correcta")
 
     def GetServerResponse(self, request, context):
         print ("Hola mundo")
@@ -22,6 +24,7 @@ def serve():
     proto_message_pb2_grpc.add_ItemServiceServicer_to_server(buscar(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
+    sleep(20)
     conn = db_con()
     cursor = conn.cursor()
     cursor.execute(f"SELECT * FROM Items;")

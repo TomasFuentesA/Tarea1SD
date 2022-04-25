@@ -6,6 +6,8 @@ networks:
 services:
 
   postgres:
+    networks:
+      - my_network
     build: ./Postgres
     restart: always
     container_name: postgres
@@ -15,10 +17,10 @@ services:
       - bind-address=0.0.0.0
       - POSTGRESQL_DATABASE=Tarea1
       - ALLOW_EMPTY_PASSWORD=yes
-    networks:
-      - my_network
 
   web:
+    networks:
+      - my_network
     build: ./Cliente
     ports:
       - "8000:5000"
@@ -26,18 +28,20 @@ services:
       - redis
       - server
       - postgres
-
   redis:
+    networks:
+      - my_network
     build: "./Redis"
     ports: 
       - "6379:6379"
-
   server:
+    networks:
+      - my_network
     build: ./Servidor
     depends_on:
       - postgres
-    networks:
-      - my_network
+
+    
   
 
 
