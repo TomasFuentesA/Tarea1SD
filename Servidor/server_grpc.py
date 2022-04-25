@@ -10,7 +10,7 @@ import server_resources
 class buscar(proto_message_pb2_grpc.ItemServiceServicer):
 
     def __init__(self):
-        logging.warning("Inicialización correcta")
+        logging.info("Inicialización correcta")
 
     def GetServerResponse(self, request, context):
         print ("Hola mundo")
@@ -24,6 +24,8 @@ def serve():
     server.start()
     sleep(20)
     conn = server_resources.init_db()
+    '''
+
     cursor = conn.cursor()
     cursor.execute(f"SELECT * FROM Items;")
     for i, record in enumerate(cursor):
@@ -32,6 +34,10 @@ def serve():
 
     # close the cursor object to avoid memory leaks
     cursor.close()
+
+    
+    '''
+    
 
     server.wait_for_termination()
 
