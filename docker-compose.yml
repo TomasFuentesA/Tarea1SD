@@ -37,6 +37,7 @@ services:
   server:
     networks:
       - my_network
+    container_name: server_grpc
     build: ./Servidor
     depends_on:
       - postgres

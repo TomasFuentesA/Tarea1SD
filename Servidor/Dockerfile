@@ -11,4 +11,4 @@ RUN python -m pip install psycopg2-binary
 
 RUN python -m grpc_tools.protoc -I./ --python_out=. --grpc_python_out=. ./proto_message.proto
 
-CMD [ "python3", "server_grpc.py" ]
+CMD [ "python3", "-u", "server_grpc.py" ]

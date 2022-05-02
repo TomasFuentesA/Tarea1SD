@@ -1,9 +1,9 @@
 syntax = 'proto3';
 
 message Item {
-    int32 id = 1;
-    string name = 2;
-    int32 value = 3;
+    float price = 1;
+    float count = 2;
+    string category = 3;
 }
 
 message Response {
@@ -15,5 +15,5 @@ message GetItemsRequest {
 }
 
 service ItemService {
-    rpc GetItem(GetItemsRequest) returns (Response) {}
+    rpc GetItem(GetItemsRequest) returns (Item) {}
 }

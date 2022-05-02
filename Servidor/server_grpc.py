@@ -7,6 +7,9 @@ from time import sleep
 import logging
 import server_resources
 
+
+def get_item(name):
+   print(name)
 class buscar(proto_message_pb2_grpc.ItemServiceServicer):
 
     def __init__(self):
@@ -14,6 +17,9 @@ class buscar(proto_message_pb2_grpc.ItemServiceServicer):
 
     def GetServerResponse(self, request, context):
         print ("Hola mundo")
+
+    def GetItem(self, request, context):
+        return proto_message_pb2.Item(**data.get(request.name, {}))
 
 
 def serve():
@@ -41,6 +47,9 @@ def serve():
 
     server.wait_for_termination()
 
+data = {
+    "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops": {"price": 109.95, "category":'mens clothing',"count": 120}
+}
 
 if __name__ == '__main__':
     serve() 
