@@ -11,7 +11,7 @@ import json
 app = Flask(__name__)
 
 r = redis.Redis(host="redis", port=6379, db=0)
-r.config_set('maxmemory', 524288*2)
+r.config_set('maxmemory', 865200)
 r.config_set('maxmemory-policy', 'allkeys-lru')
 r.flushall()
 
@@ -51,13 +51,16 @@ def search():
     cache = r.get(search)
     if cache == None:
         item = client.get_url(message=search)
+        
         r.set(search, str(item))
         return render_template('index.html', datos = item)
     else:
+        print(cache)
         item = cache.decode("utf-8")
-        item = json.loads(item)
+        print(item)
         dicc = dict()
         dicc['Resultado'] = item
+        print(cache)
         return render_template('index.html', datos = item)
 
 if __name__ == '__main__':
@@ -65,53 +68,3 @@ if __name__ == '__main__':
     #result = client.get_url(message="Hello Server you there?")
     #print(result.product[0].name + "*******")
     #print(f'{result}')
-
-'''
-app = Flask(__name__)
-
-class fetchItem(object):
-    def __init__(self):
-        self.channel = grpc.insecure_channel('server_grpc:50051')
-        self.stub = proto_message_pb2_grpc.ItemServiceStub(self.channel)
-    
-    def get_item(self, name):
-        request = proto_message_pb2.GetItemsRequest(name=name)
-        response = self.stub.GetItem(request)
-        return response
-
-def custom_get_one_item(stub, name):
-    nombre = stub.GetItem(name)
-    print("Feater called with id %d returned: %s" %(name,nombre))
-    return
-
-def custom_get_item(stub, string):
-    custom_get_one_item(stub, name=string)
-
-def query_request(consulta):
-    channel = grpc.insecure_channel('server_grpc:50051')
-    grpc.channel_ready_future(channel).result(timeout=10)
-    stub = proto_message_pb2_grpc.ItemServiceStub(channel)
-    #request = proto_message_pb2.GetItemsRequest(name=consulta)
-    #response = stub.GetItem(request)
-    #if redos
-    #else postgres then edit redis
-    response = stub.GetItem(proto_message_pb2.GetItemsRequest(name=consulta))
-    custom_get_item(stub, response)
-    return response
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/search', methods = ['GET'])
-def search():
-    client = fetchItem()
-    search = request.args.get('search')
-    print(search)
-    item = client.get_item(search)
-    print(item)
-    #sv_response = query_request(search)
-    
-
-    return render_template('index.html', datos = search)
-'''    
