@@ -31,3 +31,10 @@ localhost:8000
 http://localhost:8000/search?search=
 ```
 <p> Donde despúes del signo "=" se debe escribir la cadena de caracteres a buscar. </p>
+
+---------------------------------------
+
+<h3 align="Center">Política de Remoción</h3>
+
+<p> Para este trabajo, se revisaron dos opciones de las tantas que permite redis. Nosotros creemos que para este tipo de sistemas y plataformas es mejor "allkeys-lfu", ya que es importante mantener en caché aquellas búsquedas que presentan una mayor frecuencia frente a otras. Permitiendo así que en situaciones de "e-commerce" por ejemplo, los artículos que sean más buscados y/o cotizados tengan un acceso más rápido para aquellas que no presentan la misma frecuencia de búsqueda. </p> 
+
