@@ -1,8 +1,9 @@
 import grpc
 from concurrent import futures
+
 import proto_message_pb2 as pb2
 import proto_message_pb2_grpc as pb2_grpc
-from psycopg2 import connect
+import psycopg2
 from time import sleep
 import logging
 import server_resources
@@ -13,11 +14,20 @@ class SearchService(pb2_grpc.SearchServicer):
         pass
 
     def GetServerResponse(self, request, context):
+        item = []
+        respuesta = []
         message = request.message
         result = f'"{message}" '
-        result = {'name': result, 'price': 123}
-        search_res = {'product': [result, result]}
-        return pb2.SearchResults(**search_res)
+        cursor.execute("SELECT * FROM Items;")
+        query_res = cursor.fetchall()
+        for row in query_res:
+            if message in row[1]:
+                item.append(row)
+        for i in item:
+            result = { 'name' : result, 'price': i[2]}
+            search_res = {'product': [result, result]}
+            respuesta.append(search_res)
+        return pb2.SearchResults(**respuesta)
 
 
 def serve():
@@ -31,6 +41,7 @@ def serve():
 if __name__ == '__main__':
     sleep(20)
     conn = server_resources.init_db()
+    cursor = conn.cursor()
     serve()
 
 '''

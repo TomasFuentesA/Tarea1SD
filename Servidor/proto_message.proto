@@ -16,5 +16,5 @@ message SearchResults{
 
 message Product{
  string name = 1;
- int32 price = 2;
+ float price = 2;
 }

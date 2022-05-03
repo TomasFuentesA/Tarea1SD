@@ -8,9 +8,10 @@ RUN python3 -m pip install grpcio-tools
 RUN python -m grpc_tools.protoc -I./ --python_out=. --grpc_python_out=. ./proto_message.proto
 
 RUN pip install flask
+RUN pip install redis
 ENV FLASK_APP=api.py
 ENV FLASK_RUN_HOST=0.0.0.0
 
 EXPOSE 5000
 COPY . .
-CMD ["python3", "api.py"]
+CMD ["flask", "run"]
