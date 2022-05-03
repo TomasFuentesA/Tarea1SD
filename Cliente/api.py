@@ -3,11 +3,43 @@ from flask import Flask, render_template, request
 import grpc
 
 import logging
-import proto_message_pb2
-import proto_message_pb2_grpc
+import proto_message_pb2 as pb2_grpc
+import proto_message_pb2_grpc as pb2
 
 
 
+class SearchClient(object):
+    """
+    Client for gRPC functionality
+    """
+
+    def __init__(self):
+        self.host = 'localhost'
+        self.server_port = 50051
+
+        # instantiate a channel
+        self.channel = grpc.insecure_channel(
+            '{}:{}'.format(self.host, self.server_port))
+
+        # bind the client and the server
+        self.stub = pb2_grpc.SearchStub(self.channel)
+
+    def get_url(self, message):
+        """
+        Client function to call the rpc for GetServerResponse
+        """
+        message = pb2.Message(message=message)
+        print(f'{message}')
+        return self.stub.GetServerResponse(message)
+
+
+if __name__ == '__main__':
+    client = SearchClient()
+    result = client.get_url(message="Hello Server you there?")
+    print(result.product[0].name + "*******")
+    print(f'{result}')
+
+'''
 app = Flask(__name__)
 
 class fetchItem(object):
@@ -55,3 +87,4 @@ def search():
     
 
     return render_template('index.html', datos = search)
+'''    

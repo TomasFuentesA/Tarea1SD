@@ -1,13 +1,39 @@
 import grpc
 from concurrent import futures
-import proto_message_pb2
-import proto_message_pb2_grpc
+import proto_message_pb2 as pb2
+import proto_message_pb2_grpc as pb2_grpc
 from psycopg2 import connect
 from time import sleep
 import logging
 import server_resources
 
+class SearchService(pb2_grpc.SearchServicer):
 
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def GetServerResponse(self, request, context):
+        message = request.message
+        result = f'"{message}" '
+        result = {'name': result, 'price': 123}
+        search_res = {'product': [result, result]}
+        return pb2.SearchResults(**search_res)
+
+
+def serve():
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    pb2_grpc.add_SearchServicer_to_server(SearchService(), server)
+    server.add_insecure_port('[::]:50051')
+    server.start()
+    server.wait_for_termination()
+
+
+if __name__ == '__main__':
+    sleep(20)
+    conn = server_resources.init_db()
+    serve()
+
+'''
 def get_item(name):
    print(name)
 class buscar(proto_message_pb2_grpc.ItemServiceServicer):
@@ -30,7 +56,7 @@ def serve():
     server.start()
     sleep(20)
     conn = server_resources.init_db()
-    '''
+    
 
     cursor = conn.cursor()
     cursor.execute(f"SELECT * FROM Items;")
@@ -42,7 +68,6 @@ def serve():
     cursor.close()
 
     
-    '''
     
 
     server.wait_for_termination()
@@ -52,4 +77,5 @@ data = {
 }
 
 if __name__ == '__main__':
-    serve() 
+    serve()
+'''     
