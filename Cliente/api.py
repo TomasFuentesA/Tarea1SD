@@ -11,7 +11,7 @@ import json
 app = Flask(__name__)
 
 r = redis.Redis(host="redis", port=6379, db=0)
-r.config_set('maxmemory', 865200)
+r.config_set('maxmemory', 865200*2)
 r.config_set('maxmemory-policy', 'allkeys-lru')
 r.flushall()
 
@@ -53,7 +53,7 @@ def search():
         item = client.get_url(message=search)
         
         r.set(search, str(item))
-        return render_template('index.html', datos = item)
+        return render_template('index.html', datos = item, procedencia = "Datos sacados de PostgreSQL")
     else:
         print(cache)
         item = cache.decode("utf-8")
@@ -61,7 +61,7 @@ def search():
         dicc = dict()
         dicc['Resultado'] = item
         print(cache)
-        return render_template('index.html', datos = item)
+        return render_template('index.html', datos = item, procedencia = "Datos sacados de Redis")
 
 if __name__ == '__main__':
     time.sleep(25)
